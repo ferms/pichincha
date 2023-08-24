@@ -1,0 +1,40 @@
+
+<div class="container">
+	<div class="search-and-add">
+        <input type="text" >
+        <button type="button">Agregar</button>
+    </div>
+	<div class="table">
+		<div class="table-header">
+			<div class="table-header-item"><a id="logo" class="table-a-header" href="#">Logo</a></div>
+			<div class="table-header-item"><a id="nombre-del-producto" class="table-a-header " href="#">Nombre del producto</a></div>
+			<div class="table-header-item"><a id="descripcion" class="table-a-header " href="#">Descripción</a></div>
+			<div class="table-header-item"><a id="fecha-de-liberacion" class="table-a-header " href="#">Fecha de liberación</a></div>
+			<div class="table-header-item"><a id="fecha-de-reestructuracion" class="table-a-header " href="#">Fecha de reestructuración</a></div>
+			<div class="table-header-item"><a id="btns" class="table-a-header " href="#"> </a></div>
+
+		</div>
+		<div class="table-content">	
+			<div class="table-row" *ngFor="let item of productData">		
+				<div class="table-data">
+                    <img class="img-logo-table" src="{{item.logo}}" alt="logo">
+                </div>
+				<div class="table-data">
+                    {{item.name}}
+                </div>
+				<div class="table-data">
+                    {{item.description}}
+                </div>
+				<div class="table-data">
+                    {{item.date_release}}
+                </div>
+				<div class="table-data">
+                    {{item.date_revision}}
+                </div>
+                <div class="table-data">
+                 <button type="button"></button>
+                </div>
+			</div>
+		</div>	
+	</div>
+</div>

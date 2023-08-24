@@ -1,0 +1,49 @@
+@import "./variables";
+
+*, *:before, *:after {
+	box-sizing:border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  overflow-x: hidden !important;
+  position: relative;
+  height: 100vh;
+  background: $white-3;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: $SansPro-regular !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgb(255, 255, 255);
+  background-color: $white;
+  margin: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: $grey-sidebar;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+
+
+
+
+input::placeholder {
+  font-family: $SansPro-light !important;
+  font-size: 1rem !important;
+}

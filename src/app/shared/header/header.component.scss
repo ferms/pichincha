@@ -1,0 +1,10 @@
+.content-header{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    padding: 0.5rem;
+    .logo-pichincha{
+        width: 100%;
+        max-width: 300px;
+    }
+}

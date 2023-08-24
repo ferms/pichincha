@@ -1,0 +1,66 @@
+@import '../../../../styles/variables';
+
+$base-spacing-unit: 24px;
+$half-spacing-unit: $base-spacing-unit / 2;
+
+
+
+.container {
+    max-width: 1350px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    .search-and-add{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+.table {
+	width:100%;
+	border:1px solid $sky-blue-opacity-55;
+}
+
+.table-header {
+	display:flex;
+	width:100%;
+	background:#f3f3f3;
+	padding:($half-spacing-unit * 1.5) 0;
+}
+
+.table-row {
+	display:flex;
+	width:100%;
+	padding:($half-spacing-unit * 1.5) 0;
+	
+	&:nth-of-type(odd) {
+		background:$white-2;
+	}
+}
+
+.table-data, .table-header-item {
+	flex: 1 1 20%;
+	text-align:center;
+    .img-logo-table{
+        width: 55px;
+        height: 50px;
+        border-radius: 100%;
+    }
+}
+
+
+.table-a-header {
+	color: $black-label;
+	text-decoration: none;
+	position:relative;
+	display:inline-block;
+	padding-left:$base-spacing-unit;
+	padding-right:$base-spacing-unit;
+}
