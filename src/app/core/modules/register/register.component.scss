@@ -1,0 +1,50 @@
+@import '../../../../styles/variables';
+.container-register{
+    max-width: 750px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 1.5rem;
+    background-color: $white;
+    padding: 0.5rem;
+    h2{
+        font-size: 2rem;
+        text-align: center;
+        margin: 1rem;
+    }
+    .content-cards-register{
+        border-top: solid 1px #b3b3b3;
+        margin-top: 1rem;
+        .form-group {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            max-width: 600px;
+            margin: auto;
+    .group-label-input{
+        input{
+            width: 280px;
+        }
+    }
+        }
+    }
+
+  .content-btns{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+
+    .btn-primary{
+        padding: 1rem;
+        width: 88px;
+    }
+    .btn-reload{
+        margin-right: 4rem;
+        background-color: #e9ecf3;
+    }
+
+  }
+}

@@ -1,1 +1,78 @@
-<p>register works!</p>
+<div class="container-register">
+    <h2>Formulario de Registro</h2>
+
+    <div class="content-cards-register">
+        <form [formGroup]="formGroupRegister"  (ngSubmit)="submitSaveNewDocumentForm()"  autocomplete="on" class="mt-1">
+            <div class="form-group">
+                <div class="group-label-input">
+                    <label for="id">ID</label>
+                    <input type="text" name="id" formControlName="id"  (ngModelChange)="validateform()"
+                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.id.status === 'INVALID' }">
+                    <span class="error-message"
+                        *ngIf=" formGroupRegister.controls.id.status === 'INVALID'">ID
+                        no válido!</span>
+                </div>
+                <div class="group-label-input">
+                    <label for="name">Nombre</label>
+                    <input type="text" name="name" formControlName="name"  (ngModelChange)="validateform()"
+                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.name.status === 'INVALID' }">
+                    <span class="error-message"
+                        *ngIf="formGroupRegister.controls.name.status === 'INVALID' ">Este
+                        campo es requerido!</span>
+                </div>
+            </div>
+
+            <div class="form-group mt-2">
+                <div class="group-label-input">
+                    <label for="description">Descripción</label>
+                    <input type="text" name="description" formControlName="description"  (ngModelChange)="validateform()"
+                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.description.status === 'INVALID'  }">
+                    <span class="error-message"
+                        *ngIf="formGroupRegister.controls.description.status === 'INVALID' ">Este
+                        campo es requerido!</span>
+                </div>
+                <div class="group-label-input">
+                    <label for="logo">Logo</label>
+                    <input type="text" name="logo" formControlName="logo"  (ngModelChange)="validateform()" placeholder="http:// o https://"
+                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.logo.status === 'INVALID' &&  formGroupRegister.controls.logo.touched }">
+                    <span class="error-message"
+                        *ngIf=" formGroupRegister.controls.logo.status === 'INVALID' &&  formGroupRegister.controls.logo.touched">Inserte una URL valida!</span>
+                </div>
+            </div>
+
+
+            <div class="form-group mt-2">
+                <div class="group-label-input">
+                    <label for="date_release">Fecha de Liberación</label>
+                    <input type="date" name="date_release" formControlName="date_release"  (ngModelChange)="validateform()"
+                        min="{{dateToday | date:'yyyy-MM-dd'}}"
+                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.date_release.status === 'INVALID' &&  formGroupRegister.controls.date_release.touched}">
+                    <span class="error-message"
+                        *ngIf="formGroupRegister.controls.date_release.status === 'INVALID' &&  formGroupRegister.controls.date_release.touched">Este
+                        campo es requerido!</span>
+                </div>
+                <div class="group-label-input">
+                    <label for="date_revision">Fecha de Revisión</label>
+                    <input type="date" name="date_revision" 
+                    formControlName="date_revision"   
+                    (ngModelChange)="validateform()"
+                    min="{{yearToday}}"
+                    [ngClass]="{ 'is-invalid': formGroupRegister.controls.date_revision.status === 'INVALID' &&  formGroupRegister.controls.date_revision.touched}">
+                    <span class="error-message"
+                        *ngIf="formGroupRegister.controls.date_revision.status === 'INVALID' &&  formGroupRegister.controls.date_revision.touched">Este
+                        campo es requerido!</span>
+                </div>
+
+            </div>
+
+            <div class="content-btns">
+                <button type="button" class="btn btn-primary btn-reload" (click)="initformGroup()">Reiniciar</button>
+                <button type="submit" class="btn btn-primary btn-add" *ngIf="isEdid">Editar</button>
+                <button type="submit" class="btn btn-primary btn-add" [disabled]="formGroupRegister.status === 'INVALID'"
+                    *ngIf="isCreate">Enviar</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>

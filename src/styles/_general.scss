@@ -11,8 +11,7 @@ html {
 body {
   overflow-x: hidden !important;
   position: relative;
-  height: 100vh;
-  background: $white-3;
+  background: $white-5;
   background-size: cover;
   background-attachment: fixed;
   font-family: $SansPro-regular !important;
@@ -41,9 +40,95 @@ body {
 
 
 
+.btn {
+  border:none;
+  position:relative;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+  font-weight: 600;
+  border-radius: 3px;
+  &:hover{
+    background:#fff;
+    color:$blue-darck;
+  }
 
+  &:before, &:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: $blue-darck;
+    transition:400ms ease all;
+  }
+  &:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+  }
+  &:hover:before,&:hover:after{
+    width:100%;
+    transition:800ms ease all;
+  }
 
-input::placeholder {
-  font-family: $SansPro-light !important;
-  font-size: 1rem !important;
 }
+input {
+  font-size: 1rem;
+  line-height: 28px;
+  padding: 8px 16px;
+  height: 40px;
+  border: unset;
+  border-radius: 5px;
+  outline-color: rgb(84 105 212 / 0.5);
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(60, 66, 87, 0.16) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px;
+  &::placeholder {
+    font-family: $SansPro-light ;
+    font-size: 1rem ;
+  }
+
+  &.is-invalid  {
+    box-shadow: $red-error 0px 0px 0px 0px, $red-error 0px 0px 0px 0px, $red-error 0px 0px 0px 0px, $red-error 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px;
+  }
+  &:disabled{
+    opacity: 0.5;
+  }
+}
+
+
+ label {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.mt-2 {
+  margin-top: 1.8rem !important;
+}
+
+.btn-add {
+  background-color: $yellow;
+  color: $blue-darck;
+  padding: 1rem;
+  &:disabled{
+    opacity: 0.4;
+  }
+}
+
+.mt-1{
+margin-top: 1rem;
+}
+
+span.error-message {
+  display: block;
+  font-size: 14px;
+ color: $red-error ;
+ font-weight: 500;
+ padding-left: 3px;
+}
+
