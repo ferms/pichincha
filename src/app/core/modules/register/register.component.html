@@ -6,18 +6,18 @@
             <div class="form-group">
                 <div class="group-label-input">
                     <label for="id">ID</label>
-                    <input type="text" name="id" formControlName="id"  (ngModelChange)="validateform()"
-                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.id.status === 'INVALID' }">
+                    <input type="text" name="id" formControlName="id"  (ngModelChange)="validateform('id')"
+                        [ngClass]="{ 'is-invalid':  formValidate.id.status === 'INVALID'  &&  formValidate.id.touched}" [disabled]="false">
                     <span class="error-message"
-                        *ngIf=" formGroupRegister.controls.id.status === 'INVALID'">ID
+                        *ngIf="  formValidate.id.status === 'INVALID'  &&  formValidate.id.touched">ID
                         no válido!</span>
                 </div>
                 <div class="group-label-input">
                     <label for="name">Nombre</label>
-                    <input type="text" name="name" formControlName="name"  (ngModelChange)="validateform()"
-                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.name.status === 'INVALID' }">
+                    <input type="text" name="name" formControlName="name"  (ngModelChange)="validateform('name')"
+                        [ngClass]="{ 'is-invalid':  formValidate.name.status === 'INVALID'    &&   formValidate.name.touched  }">
                     <span class="error-message"
-                        *ngIf="formGroupRegister.controls.name.status === 'INVALID' ">Este
+                        *ngIf=" formValidate.name.status === 'INVALID'   &&  formValidate.name.touched  " >Este
                         campo es requerido!</span>
                 </div>
             </div>
@@ -25,18 +25,18 @@
             <div class="form-group mt-2">
                 <div class="group-label-input">
                     <label for="description">Descripción</label>
-                    <input type="text" name="description" formControlName="description"  (ngModelChange)="validateform()"
-                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.description.status === 'INVALID'  }">
+                    <input type="text" name="description" formControlName="description"  (ngModelChange)="validateform('description')"
+                        [ngClass]="{ 'is-invalid':  formValidate.description.status === 'INVALID'   &&  formValidate.description.touched}">
                     <span class="error-message"
-                        *ngIf="formGroupRegister.controls.description.status === 'INVALID' ">Este
+                        *ngIf=" formValidate.description.status === 'INVALID' &&  formValidate.description.touched ">Este
                         campo es requerido!</span>
                 </div>
                 <div class="group-label-input">
                     <label for="logo">Logo</label>
-                    <input type="text" name="logo" formControlName="logo"  (ngModelChange)="validateform()" placeholder="http:// o https://"
-                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.logo.status === 'INVALID' &&  formGroupRegister.controls.logo.touched }">
+                    <input type="text" name="logo" formControlName="logo"  (ngModelChange)="validateform('logo')" placeholder="http:// o https://"
+                        [ngClass]="{ 'is-invalid':  formValidate.logo.status === 'INVALID' &&  formValidate.logo.touched}">
                     <span class="error-message"
-                        *ngIf=" formGroupRegister.controls.logo.status === 'INVALID' &&  formGroupRegister.controls.logo.touched">Inserte una URL valida!</span>
+                        *ngIf="  formValidate.logo.status === 'INVALID'  &&  formValidate.logo.touched">Inserte una URL valida!</span>
                 </div>
             </div>
 
@@ -44,22 +44,23 @@
             <div class="form-group mt-2">
                 <div class="group-label-input">
                     <label for="date_release">Fecha de Liberación</label>
-                    <input type="date" name="date_release" formControlName="date_release"  (ngModelChange)="validateform()"
+                    <input type="date" name="date_release"  formControlName="date_release"   (ngModelChange)="validateform('date_release')"
                         min="{{dateToday | date:'yyyy-MM-dd'}}"
-                        [ngClass]="{ 'is-invalid': formGroupRegister.controls.date_release.status === 'INVALID' &&  formGroupRegister.controls.date_release.touched}">
+                        [ngClass]="{ 'is-invalid':  formValidate.date_release.status === 'INVALID'  &&  formValidate.date_release.touched}">
+                 
                     <span class="error-message"
-                        *ngIf="formGroupRegister.controls.date_release.status === 'INVALID' &&  formGroupRegister.controls.date_release.touched">Este
+                        *ngIf=" formValidate.date_release.status === 'INVALID'  &&  formValidate.date_release.touched">Este
                         campo es requerido!</span>
                 </div>
                 <div class="group-label-input">
                     <label for="date_revision">Fecha de Revisión</label>
                     <input type="date" name="date_revision" 
                     formControlName="date_revision"   
-                    (ngModelChange)="validateform()"
+                    (ngModelChange)="validateform('date_revision')"
                     min="{{yearToday}}"
-                    [ngClass]="{ 'is-invalid': formGroupRegister.controls.date_revision.status === 'INVALID' &&  formGroupRegister.controls.date_revision.touched}">
+                    [ngClass]="{ 'is-invalid':  formValidate.date_revision.status === 'INVALID'  &&  formValidate.date_revision.touched}">
                     <span class="error-message"
-                        *ngIf="formGroupRegister.controls.date_revision.status === 'INVALID' &&  formGroupRegister.controls.date_revision.touched">Este
+                        *ngIf=" formValidate.date_revision.status === 'INVALID'  &&  formValidate.date_revision.touched">Este
                         campo es requerido!</span>
                 </div>
 
@@ -67,7 +68,7 @@
 
             <div class="content-btns">
                 <button type="button" class="btn btn-primary btn-reload" (click)="initformGroup()">Reiniciar</button>
-                <button type="submit" class="btn btn-primary btn-add" *ngIf="isEdid">Editar</button>
+                <button type="submit" class="btn btn-primary btn-add"  [disabled]="formGroupRegister.status === 'INVALID'" *ngIf="isEdid">Editar</button>
                 <button type="submit" class="btn btn-primary btn-add" [disabled]="formGroupRegister.status === 'INVALID'"
                     *ngIf="isCreate">Enviar</button>
             </div>

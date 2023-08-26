@@ -132,3 +132,16 @@
         }
     }
 }
+
+.footer-table {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    select {
+        padding: 5px 15px;
+    }
+}
+

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environments';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class ProductsService {
     const headers = new HttpHeaders({
       'authorId':'1143433233',
     });
-    return this.http.get<any>(
+    return this.http.get<productsModels[]>(
       `${this.apiURL}${'/bp/products'}`,
       {
         headers,
@@ -28,7 +28,7 @@ export class ProductsService {
     const headers = new HttpHeaders({
       'authorId':'1143433233',
     });
-    return this.http.post<any>(
+    return this.http.post<productsModels>(
       `${this.apiURL}${'/bp/products'}`,
       formData,
       {
@@ -36,6 +36,49 @@ export class ProductsService {
       }
     );
   }
+
+  
+  public updateProducts(formData: productsModels) {
+    const headers = new HttpHeaders({
+      'authorId':'1143433233',
+    });
+    return this.http.put<productsModels>(
+      `${this.apiURL}${'/bp/products'}`,
+      formData,
+      {
+        headers,
+      }
+    );
+  }
+
+  public deleteProducts(id: string) {
+    const headers = new HttpHeaders({
+      'authorId':'1143433233',
+    });
+    let params = new HttpParams().append('id', id);
+
+    return this.http.delete<{ message: string }>(
+      `${this.apiURL}${'/bp/products'}`,
+      {
+        params,
+        headers,
+      },
+      
+    );
+  }
+
+
+  public verifiqueProducts(id: string) {
+    let params = new HttpParams().append('id', id);
+    return this.http.get<any>(
+      `${this.apiURL}${'/bp/products/verification'}`,
+      {
+        params,
+      }
+    );
+  }
+
+  
 
 }
 

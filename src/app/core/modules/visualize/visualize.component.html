@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="search-and-add">
-		<input type="text" placeholder="Search...">
+		<input type="text" (keyup)="keyFunc($event)" placeholder="Search...">
 		<button class="btn btn-add" type="button"  [routerLink]="['/register']">Agregar</button>
 	</div>
 	<div class="container-table">
@@ -41,8 +41,12 @@
 							   <img class="" src="../../../../assets/images/menu-dots-vertical.svg" alt="dots">
 							</button>
 							<div  id="myDropdown"  class="dropdown-content" *ngIf="i === this.selectIndex && hiddenMenu">
-								<a href="#contact"> <img class="" src="../../../../assets/images/edit.svg" alt="edit"></a>
-								<a href="#contact"> <img class="" src="../../../../assets/images/trash.svg" alt="trash"></a>
+								<a [routerLink]="['/edit', item.id]" (click)="editRegister(item.id)"> 
+									<img class="" src="../../../../assets/images/edit.svg" alt="edit" >
+								</a>
+								<a  (click)="deleteRegister(item.id)"> 
+									<img class="" src="../../../../assets/images/trash.svg" alt="trash">
+								</a>
 							</div>
 
 						</div>
@@ -51,7 +55,10 @@
 			</div>
 		</div>
 		<div class="footer-table" *ngIf="productData">
-			<p>{{productData.length}} Resultados</p>
+			<p>{{productDataAll.length}} Resultados</p>
+			<select #teams (change)="onSelected(teams.value)">
+				<option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
+		   </select>
 		</div>
 	</div>
 </div>

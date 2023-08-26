@@ -50,6 +50,42 @@ validateFormGrupDocument
   };
 }
 
+
+viewFormGrupDocument
+  (formValidate: { id: string | null; name: string | null; description: string | null; logo: string | null; date_release: string | null; date_revision: string | null; } ,
+  isView: boolean) {
+    const reg = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+  return {
+    id: new FormControl({
+      value: formValidate.id,
+      disabled: true
+    }, [Validators.required, Validators.minLength(3), Validators.maxLength(10)]),
+    name: new FormControl({
+      value: formValidate.name,
+      disabled: isView
+    }, [Validators.required,  Validators.minLength(5), Validators.maxLength(100)]),
+    description: new FormControl({
+      value: formValidate.description,
+      disabled: isView
+    }, [Validators.required,Validators.minLength(10), Validators.maxLength(200)]),
+    logo: new FormControl({
+      value: formValidate.logo,
+      disabled: isView
+    }, [Validators.required, Validators.pattern(reg)]),
+    date_release: new FormControl({
+      value: formValidate.date_release,
+      disabled: isView
+    }, [Validators.required]),
+    date_revision: new FormControl({
+      value: formValidate.date_revision,
+      disabled: false
+    }, [Validators.required]),
+  };
+}
+
+
+
+
 }
 export default CreateRegisForm;
 

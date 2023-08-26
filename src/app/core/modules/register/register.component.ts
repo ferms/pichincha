@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import CreateRegisForm from './create-register';
-import { ProductsService } from '../../services/products.service';
+import { ProductsService, productsModels } from '../../services/products.service';
+import { map } from 'rxjs';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -14,16 +17,18 @@ export class RegisterComponent {
   isCreate = false;
   dateToday: Date;
   yearToday!: string;
-
+  id!: any;
+  productEdit!: productsModels[];
+  reg = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
   formGroupRegister = this.formBuilder.group({
-    id: ['', [Validators.required]],
-    name: ['', [Validators.required]],
-    description: ['', [Validators.required]],
-    logo: ['', [Validators.required]],
+    id: ['', [Validators.required , Validators.minLength(3), Validators.maxLength(10)]],
+    name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+    description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+    logo: ['', [Validators.required, Validators.pattern(this.reg)]],
     date_release: ['', [Validators.required]],
     date_revision: ['', [Validators.required]],
   });
-  
+
   get formValidate() {
     return this.formGroupRegister.controls;
   }
@@ -34,79 +39,142 @@ export class RegisterComponent {
     private formBuilder: FormBuilder,
     private createRegisForm: CreateRegisForm,
     private productsService: ProductsService) {
-      this.activeroute.url.subscribe((data) => {
-        switch (data[0].path) {
-          case 'edit-register': {
-            this.isEdid = true;
-            this.isCreate = false;
-            break;
-          }
-          default: {
-            this.isCreate = true;
-            this.isEdid = false;
-            break;
-          }
+    this.activeroute.url.subscribe((data) => {
+
+      switch (data[0].path) {
+        case 'edit': {
+          this.activeroute.paramMap
+            .pipe(map((params: { get: (arg0: string) => any; }) => params.get('id')))
+            .subscribe((id) => {
+              this.id = id;
+            });
+          this.isEdid = true;
+          this.isCreate = false;
+          this.getDataEdit();
+          break;
         }
-      });
-      this.dateToday = new Date();
-      this.initformGroup();
-      this.formGroupRegister.controls['date_revision'].disable();
-     }
+        default: {
+          this.isCreate = true;
+          this.isEdid = false;
+          break;
+        }
+      }
+    });
+    this.dateToday = new Date();
+    this.formGroupRegister.controls['date_revision'].disable();
+  }
 
-     public resetFormAndRedirect() {
-      this.formGroupRegister.reset();
-      this.router.navigateByUrl('/visualize');
-    }
+  getDataEdit() {
+    this.productsService.getAllProducts().subscribe((response: productsModels[]) => {
+      response;
+      this.productEdit = response.filter(data => data.id === this.id);
+      this.formGroupRegister.controls['id'].disable();
+      this.validEditAndView(this.productEdit[0]);
+    });
+  }
 
-     initformGroup(){
-      this.formGroupRegister = this.formBuilder.group({
-        id: ['', []],
-        name: ['', []],
-        description: ['', []],
-        logo: ['', []],
-        date_release: ['', []],
-        date_revision: ['', []],
-      });
-      this.formGroupRegister.controls['date_revision'].disable();
-     }
+  public resetFormAndRedirect() {
+    this.formGroupRegister.reset();
+    this.router.navigateByUrl('/visualize');
+  }
+
+  initformGroup() {
+    this.formGroupRegister = this.formBuilder.group({
+      id: ['', [Validators.required , Validators.minLength(3), Validators.maxLength(10)]],
+      name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+      logo: ['', [Validators.required, Validators.pattern(this.reg)]],
+      date_release: ['', [Validators.required]],
+      date_revision: ['', [Validators.required]],
+    });
+    this.formGroupRegister.controls['date_revision'].disable();
+  }
 
   submitSaveNewDocumentForm() {
+    if (this.isEdid ) {
+      this.formGroupRegister.controls['id'].disable();
+    }
     this.formGroupRegister = new FormGroup(this.createRegisForm.validateFormGrupDocument(
       this.formValidate,
-     false,
+      this.isEdid ,
     ));
     if (this.formGroupRegister.status === 'VALID') {
       if (this.isCreate) {
         const requestBody: any = this.createRegisForm.composesaveNewRegisFormRequestBody(this.formValidate);
-        console.log('%c⧭', 'color: #00b300', requestBody);
-            this.productsService.createProducts(requestBody).subscribe((response) => {
-            console.log('%c⧭', 'color: #aa00ff', response);
-            if (response) {
-              this.resetFormAndRedirect();
-            }
-           
-              });
+        this.productsService.createProducts(requestBody).subscribe((response) => {
+          if (response) {
+
+            let timerInterval: any;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El registro se guardado correctamente',
+              showConfirmButton: false,
+              timer: 1800,
+              willClose: () => {
+                clearInterval(timerInterval);
+                this.resetFormAndRedirect();
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+    
+              }
+            });
+
+          }
+        });
+      } else {
+        const requestBody: any = this.createRegisForm.composesaveNewRegisFormRequestBody(this.formValidate);
+        console.log('%c⧭', 'color: #99adcc', requestBody);
+        this.productsService.updateProducts(requestBody).subscribe((response) => {
+          if (response) {
+            let timerInterval: any;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El registro se ha editado correctamente',
+              showConfirmButton: false,
+              timer: 1800,
+              willClose: () => {
+                clearInterval(timerInterval);
+                this.resetFormAndRedirect();
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+    
+              }
+            });
+          }
+
+        });     
       }
+
     }
   }
 
-
- validateform() {
-    this.formGroupRegister = new FormGroup(this.createRegisForm.validateFormGrupDocument(
-      this.formValidate,
-     false,
-    ));
+  validateform(name: string) {
+      this.formGroupRegister.get(name);
     if (this.formGroupRegister.controls.date_release.value) {
       const dateStart = new Date(this.formGroupRegister.controls.date_release.value);
-      dateStart.setFullYear(dateStart.getFullYear()+1);
-      this.yearToday = dateStart.toISOString().slice(0,10).replace(/-/g,"-");
+      dateStart.setFullYear(dateStart.getFullYear() + 1);
+      this.yearToday = dateStart.toISOString().slice(0, 10).replace(/-/g, "-");
       this.formGroupRegister.controls['date_revision'].enable();
     } else {
       this.formGroupRegister.controls['date_revision'].disable();
     }
-  
+    if (this.isEdid) {
+      this.formGroupRegister.controls['id'].disable();
+    }
   }
 
+  validEditAndView(dataObject: any) {
+    this.formGroupRegister = new FormGroup(this.createRegisForm.viewFormGrupDocument(dataObject, false,));
+    this.formGroupRegister.controls.date_release.setValue(formatDate(dataObject.date_release,'yyyy-MM-dd','en'));
+    this.formGroupRegister.controls.date_revision.setValue(formatDate(dataObject.date_revision,'yyyy-MM-dd','en'));
+    this.formGroupRegister.controls['id'].disable();
+  }
 
 
 }
