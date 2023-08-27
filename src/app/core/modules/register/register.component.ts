@@ -101,10 +101,9 @@ export class RegisterComponent {
     if (this.formGroupRegister.status === 'VALID') {
       if (this.isCreate) {
         const requestBody: any = this.createRegisForm.composesaveNewRegisFormRequestBody(this.formValidate);
-        this.productsService.createProducts(requestBody).subscribe((response) => {
-          if (response) {
-
-            let timerInterval: any;
+        this.productsService.createProducts(requestBody).subscribe({
+          next: () => {
+           let timerInterval: any;
             Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -116,8 +115,20 @@ export class RegisterComponent {
                 this.resetFormAndRedirect();
               }
             })
-
-          }
+          }, error: (err) => {
+            let timerInterval: any;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'warning',
+              title: 'Oops...',
+              text: '¡Algo salió mal!',
+              showConfirmButton: false,
+              timer: 1800,
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            });
+            },
         });
       } else {
         const requestBody: any = this.createRegisForm.composesaveNewRegisFormRequestBody(this.formValidate);
