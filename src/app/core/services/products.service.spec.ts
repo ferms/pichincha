@@ -18,7 +18,6 @@ xdescribe('ProductsService', () => {
         
       ], 
       providers:   [ProductsService,
-        { provide: TestComponentRenderer, useClass: TestComponentRenderer }
       ],
       declarations: [ProductsService]
     });

@@ -121,7 +121,6 @@ export class RegisterComponent {
         });
       } else {
         const requestBody: any = this.createRegisForm.composesaveNewRegisFormRequestBody(this.formValidate);
-        console.log('%c⧭', 'color: #99adcc', requestBody);
         this.productsService.updateProducts(requestBody).subscribe((response) => {
           if (response) {
             let timerInterval: any;

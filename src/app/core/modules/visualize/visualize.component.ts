@@ -14,16 +14,43 @@ export class VisualizeComponent {
   selectIndex!: number;
   hiddenMenu = false;
   public pages: number[] = [];
+  public deleteId: [{id: any}] = [{id: undefined}];
+  numberResult = 0;
 
-  constructor(private productsService: ProductsService,) {
+  constructor(private productsService: ProductsService) {
+      this.getRegisterProducts();
+  }
 
+  getRegisterProducts(){
     this.productsService.getAllProducts().subscribe((response: productsModels[]) => {
+      let arrayIdDelete: any = localStorage.getItem('deleteRegister');
+      if (arrayIdDelete) {
+        arrayIdDelete = JSON.parse(arrayIdDelete);
+        arrayIdDelete.forEach( (value: any) => {
+          this.deleteId.push({id:  value.id})
+        }); 
+      }
+      if (this.deleteId) {
+        this.deleteId.forEach( (value: any) => {
+          if (value.id) {
+          response = response.filter((item) => {
+            return item.id  !== value.id;
+           } );
+        }
+      }); 
+      }
       this.productDataAll = response;
-      let numberOfPages = Math.ceil(response.length / 5);
-      let pages = Array.from({ length: numberOfPages }, (v, i) => i + 1);
-      this.pages = pages;
+      this.numberResult =  this.productDataAll.length;
+      this.numberPages(this.productDataAll);
       this.productData = response.slice(0, 5);
     });
+  }
+
+
+  numberPages(data:productsModels[] ){
+    let numberOfPages = Math.ceil(data.length / 5);
+    let pages = Array.from({ length: numberOfPages }, (v, i) => i + 1);
+    this.pages = pages;
   }
 
   activeActions(index: number) {
@@ -31,9 +58,6 @@ export class VisualizeComponent {
     this.selectIndex = index;
   }
 
-  editRegister(authorId: string) {
-    this.hiddenMenu = false;
-  }
 
   deleteRegister(authorId: string) {
     this.hiddenMenu = false;
@@ -57,24 +81,23 @@ export class VisualizeComponent {
       if (result.isConfirmed) {
         this.productsService.verifiqueProducts(authorId).subscribe((response: any) => {
           if (response) {
-            this.productsService.deleteProducts(authorId).subscribe((response: any) => {
-              console.log('%c⧭ deleteProducts', 'color: #997326', response);
-              if (response) {
+            this.productsService.deleteProducts(authorId).subscribe({
+              next: () => {
                 swalWithBootstrapButtons.fire(
                   '¡Eliminado!',
                   'Su registro ha sido eliminado.',
                   'success'
-                )
-              }
-            }, err => {
-              swalWithBootstrapButtons.fire(
-                'Oops..',
-                '¡Algo salió mal!',
-                'error'
-              )
-              const deleteBasi = this.productDataAll.filter((item) => item.id !== authorId)
-              this.productData = deleteBasi.slice(0, 5);
-            })
+                );
+              }, error: (err) => {
+                  console.log('%cX Error', 'color: #cc3333', err.error);
+                  this.deleteId.push({id: authorId});
+                  localStorage.setItem('deleteRegister', JSON.stringify(this.deleteId));
+                  this.productDataAll = this.productDataAll.filter((item) => item.id !== authorId);
+                  this.numberPages(this.productDataAll);
+                  this.numberResult =  this.productDataAll.length;
+                  this.productData =  this.productDataAll.slice(0, 5);
+                },
+            });
           }
         });
 
@@ -92,24 +115,28 @@ export class VisualizeComponent {
   }
 
   onSelected(value: string): void {
+    this.hiddenMenu = false;
     const totalRegister = this.productDataAll;
     this.productData = totalRegister.slice((parseInt(value) * 5) - 5, parseInt(value) * 5);
   }
 
-
-  keyFunc(event: any) {
+  searchFunc(event: any) {
     if (event.target.value.length > 2) {
       let valuexShear = this.productDataAll.filter((obj) =>
         obj.name.toLowerCase().includes(event.target.value.toLowerCase()) ||
         obj.description.toLowerCase().includes(event.target.value.toLowerCase())
       );
       this.productData = valuexShear;
+      this.numberResult =  this.productData.length;
+      this.numberPages( this.productData);
     } else if (event.target.value.length < 1) {
       const totalRegister = this.productDataAll;
       let numberOfPages = Math.ceil(totalRegister.length / 5);
       let pages = Array.from({ length: numberOfPages }, (v, i) => i + 1);
       this.pages = pages;
       this.productData = totalRegister.slice(0, 5);
+      this.numberResult =  this.productDataAll.length;
+      this.numberPages(this.productDataAll);
     }
   }
 

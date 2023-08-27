@@ -1,21 +1,30 @@
 <div class="container">
 	<div class="search-and-add">
-		<input type="text" (keyup)="keyFunc($event)" placeholder="Search...">
-		<button class="btn btn-add" type="button"  [routerLink]="['/register']">Agregar</button>
+		<input type="text" (keyup)="searchFunc($event)" placeholder="Search...">
+		<button class="btn btn-add" type="button" [routerLink]="['/register']">Agregar</button>
 	</div>
 	<div class="container-table">
 		<div class="container-table-row">
 			<div class="table">
 				<div class="table-header">
-					<div class="table-header-item"><a id="logo" class="table-a-header" href="#">Logo</a></div>
-					<div class="table-header-item"><a id="nombre-del-producto" class="table-a-header " href="#">Nombre
-							del producto</a></div>
-					<div class="table-header-item"><a id="descripcion" class="table-a-header " href="#">Descripción</a>
+					<div class="table-header-item"><a id="logo" class="table-a-header" >Logo</a></div>
+					<div class="table-header-item"><a id="nombre-del-producto" class="table-a-header" >
+							Nombre del producto</a></div>
+					<div class="table-header-item"><a id="descripcion" class="table-a-header " href="#">
+							Descripción 
+							<img class="letter-i" src="../../../../assets/images/letter-i.png" alt="letter">
+						</a>
 					</div>
-					<div class="table-header-item"><a id="fecha-de-liberacion" class="table-a-header " href="#">Fecha de
-							liberación</a></div>
-					<div class="table-header-item"><a id="fecha-de-reestructuracion" class="table-a-header "
-							href="#">Fecha de reestructuración</a></div>
+					<div class="table-header-item"><a id="fecha-de-liberacion" class="table-a-header " href="#">
+							Fecha de liberación
+							<img class="letter-i" src="../../../../assets/images/letter-i.png" alt="letter">
+						</a>
+					</div>
+					<div class="table-header-item"><a id="fecha-de-reestructuracion" class="table-a-header " href="#">
+							Fecha de reestructuración
+							<img class="letter-i" src="../../../../assets/images/letter-i.png" alt="letter">
+						</a>
+					</div>
 					<div class="table-header-item actions-btn"><a id="btns" class="table-a-header" href="#"> </a></div>
 
 				</div>
@@ -31,20 +40,20 @@
 							{{item.description}}
 						</div>
 						<div class="table-data">
-							{{item.date_release  | date :'M/d/yyy'}}
+							{{item.date_release | date :'M/d/yyy'}}
 						</div>
 						<div class="table-data">
-							{{item.date_revision  | date :'M/d/yyy'}}
+							{{item.date_revision | date :'M/d/yyy'}}
 						</div>
 						<div class="table-data actions-btn">
 							<button class="btn btn-doots" type="button" (click)="activeActions(i)">
-							   <img class="" src="../../../../assets/images/menu-dots-vertical.svg" alt="dots">
+								<img class="" src="../../../../assets/images/menu-dots-vertical.svg" alt="dots">
 							</button>
-							<div  id="myDropdown"  class="dropdown-content" *ngIf="i === this.selectIndex && hiddenMenu">
-								<a [routerLink]="['/edit', item.id]" (click)="editRegister(item.id)"> 
-									<img class="" src="../../../../assets/images/edit.svg" alt="edit" >
+							<div id="myDropdown" class="dropdown-content" *ngIf="i === this.selectIndex && hiddenMenu">
+								<a [routerLink]="['/edit', item.id]" (click)="hiddenMenu = false;">
+									<img class="" src="../../../../assets/images/edit.svg" alt="edit">
 								</a>
-								<a  (click)="deleteRegister(item.id)"> 
+								<a (click)="deleteRegister(item.id)">
 									<img class="" src="../../../../assets/images/trash.svg" alt="trash">
 								</a>
 							</div>
@@ -55,10 +64,10 @@
 			</div>
 		</div>
 		<div class="footer-table" *ngIf="productData">
-			<p>{{productDataAll.length}} Resultados</p>
+			<p>{{numberResult}} Resultados</p>
 			<select #teams (change)="onSelected(teams.value)">
 				<option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
-		   </select>
+			</select>
 		</div>
 	</div>
 </div>
