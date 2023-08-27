@@ -11,6 +11,7 @@ export class VisualizeComponent {
 
   productData!: productsModels[];
   productDataAll!: productsModels[];
+  dataIsSearch: productsModels[] = [];
   selectIndex!: number;
   hiddenMenu = false;
   public pages: number[] = [];
@@ -114,26 +115,29 @@ export class VisualizeComponent {
     })
   }
 
-  onSelected(value: string): void {
+  onSelectedPaginate(value: string, dataIsSearch?: productsModels[]): void {
+    let totalRegister;
     this.hiddenMenu = false;
-    const totalRegister = this.productDataAll;
-    this.productData = totalRegister.slice((parseInt(value) * 5) - 5, parseInt(value) * 5);
+    if (dataIsSearch!.length > 2) {
+      totalRegister =dataIsSearch;
+    } else {
+      totalRegister = this.productDataAll;
+    }
+    this.productData = totalRegister!.slice((parseInt(value) * 5) - 5, parseInt(value) * 5);
   }
 
   searchFunc(event: any) {
     if (event.target.value.length > 2) {
-      let valuexShear = this.productDataAll.filter((obj) =>
+      this.dataIsSearch = this.productDataAll.filter((obj) =>
         obj.name.toLowerCase().includes(event.target.value.toLowerCase()) ||
         obj.description.toLowerCase().includes(event.target.value.toLowerCase())
       );
-      this.productData = valuexShear;
-      this.numberResult =  this.productData.length;
-      this.numberPages( this.productData);
+      this.numberResult =  this.dataIsSearch .length;
+      this.numberPages(  this.dataIsSearch );
+      this.productData =  this.dataIsSearch .slice(0, 5);
     } else if (event.target.value.length < 1) {
+      this.dataIsSearch = [];
       const totalRegister = this.productDataAll;
-      let numberOfPages = Math.ceil(totalRegister.length / 5);
-      let pages = Array.from({ length: numberOfPages }, (v, i) => i + 1);
-      this.pages = pages;
       this.productData = totalRegister.slice(0, 5);
       this.numberResult =  this.productDataAll.length;
       this.numberPages(this.productDataAll);

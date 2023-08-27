@@ -65,7 +65,7 @@
 		</div>
 		<div class="footer-table" *ngIf="productData">
 			<p>{{numberResult}} Resultados</p>
-			<select #teams (change)="onSelected(teams.value)">
+			<select #teams (change)="onSelectedPaginate(teams.value, dataIsSearch)">
 				<option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
 			</select>
 		</div>
