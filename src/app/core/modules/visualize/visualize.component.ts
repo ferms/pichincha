@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductsService, productsModels } from '../../services/products.service';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-visualize',
@@ -22,7 +22,7 @@ export class VisualizeComponent {
       let numberOfPages = Math.ceil(response.length / 5);
       let pages = Array.from({ length: numberOfPages }, (v, i) => i + 1);
       this.pages = pages;
-      this.productData  = response.slice(0 , 5);
+      this.productData = response.slice(0, 5);
     });
   }
 
@@ -53,7 +53,7 @@ export class VisualizeComponent {
       confirmButtonText: '¡Sí, bórralo!',
       cancelButtonText: '¡No, cancelar!',
       reverseButtons: true
-    }).then((result) => {
+    }).then((result: any) => {
       if (result.isConfirmed) {
         this.productsService.verifiqueProducts(authorId).subscribe((response: any) => {
           if (response) {
@@ -65,9 +65,16 @@ export class VisualizeComponent {
                   'Su registro ha sido eliminado.',
                   'success'
                 )
-              } 
-
-            });
+              }
+            }, err => {
+              swalWithBootstrapButtons.fire(
+                'Oops..',
+                '¡Algo salió mal!',
+                'error'
+              )
+              const deleteBasi = this.productDataAll.filter((item) => item.id !== authorId)
+              this.productData = deleteBasi.slice(0, 5);
+            })
           }
         });
 
@@ -84,27 +91,26 @@ export class VisualizeComponent {
     })
   }
 
-  onSelected(value:string): void {
-  const totalRegister =  this.productDataAll;
-  this.productData  = totalRegister.slice((parseInt(value)* 5 ) - 5 , parseInt(value)* 5);
-	}
-
-
-  keyFunc(event: any){
-  if (event.target.value.length > 2) {
-    let valuexShear = this.productDataAll.filter((obj) => 
-    obj.name.toLowerCase().includes(event.target.value.toLowerCase()) ||
-    obj.description.toLowerCase().includes(event.target.value.toLowerCase())
-    );
-    this.productData = valuexShear;
-  } else if(event.target.value.length < 1) {
-  const totalRegister =  this.productDataAll;
-  let numberOfPages = Math.ceil(totalRegister.length / 5);
-  let pages = Array.from({ length: numberOfPages }, (v, i) => i + 1);
-  this.pages = pages;
-  this.productData  = totalRegister.slice(0 , 5);
+  onSelected(value: string): void {
+    const totalRegister = this.productDataAll;
+    this.productData = totalRegister.slice((parseInt(value) * 5) - 5, parseInt(value) * 5);
   }
 
+
+  keyFunc(event: any) {
+    if (event.target.value.length > 2) {
+      let valuexShear = this.productDataAll.filter((obj) =>
+        obj.name.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        obj.description.toLowerCase().includes(event.target.value.toLowerCase())
+      );
+      this.productData = valuexShear;
+    } else if (event.target.value.length < 1) {
+      const totalRegister = this.productDataAll;
+      let numberOfPages = Math.ceil(totalRegister.length / 5);
+      let pages = Array.from({ length: numberOfPages }, (v, i) => i + 1);
+      this.pages = pages;
+      this.productData = totalRegister.slice(0, 5);
+    }
   }
 
 }

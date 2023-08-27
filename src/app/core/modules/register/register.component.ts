@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import CreateRegisForm from './create-register';
 import { ProductsService, productsModels } from '../../services/products.service';
 import { map } from 'rxjs';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { formatDate } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -115,12 +115,7 @@ export class RegisterComponent {
                 clearInterval(timerInterval);
                 this.resetFormAndRedirect();
               }
-            }).then((result) => {
-              /* Read more about handling dismissals below */
-              if (result.dismiss === Swal.DismissReason.timer) {
-    
-              }
-            });
+            })
 
           }
         });
@@ -140,12 +135,7 @@ export class RegisterComponent {
                 clearInterval(timerInterval);
                 this.resetFormAndRedirect();
               }
-            }).then((result) => {
-              /* Read more about handling dismissals below */
-              if (result.dismiss === Swal.DismissReason.timer) {
-    
-              }
-            });
+            })
           }
 
         });     

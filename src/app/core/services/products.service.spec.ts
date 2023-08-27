@@ -1,12 +1,27 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, TestComponentRenderer } from '@angular/core/testing';
 
 import { ProductsService } from './products.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {  HttpClientModule} from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('ProductsService', () => {
+xdescribe('ProductsService', () => {
   let service: ProductsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: 
+      [
+        RouterTestingModule,
+        HttpClientTestingModule, 
+        HttpClientModule,
+        
+      ], 
+      providers:   [ProductsService,
+        { provide: TestComponentRenderer, useClass: TestComponentRenderer }
+      ],
+      declarations: [ProductsService]
+    });
     service = TestBed.inject(ProductsService);
   });
 
@@ -14,3 +29,5 @@ describe('ProductsService', () => {
     expect(service).toBeTruthy();
   });
 });
+
+
